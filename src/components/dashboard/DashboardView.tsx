@@ -36,23 +36,29 @@ export function DashboardView() {
 
   return (
     <>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
         {[
-          { label: "Cities tracked", value: globalStats.citiesTracked },
-          { label: "Avg. sustainability", value: globalStats.avgSustainabilityScore, unit: "/100" },
-          { label: "Total emissions", value: globalStats.totalEmissionsMt, unit: "Mt" },
-          { label: "Cities improving", value: `${globalStats.citiesImproving}/${globalStats.citiesTracked}` },
+          { label: "Cities tracked", value: globalStats.citiesTracked, color: "bg-emerald-700" },
+          { label: "Avg. sustainability", value: globalStats.avgSustainabilityScore, unit: "/100", color: "bg-emerald-500" },
+          { label: "Total emissions", value: globalStats.totalEmissionsMt, unit: "Mt", color: "bg-amber-500" },
+          { label: "Cities improving", value: `${globalStats.citiesImproving}/${globalStats.citiesTracked}`, color: "bg-sky-500" },
         ].map((item) => (
-          <Card key={item.label} padding="md">
+          <Card key={item.label} padding="md" className="relative overflow-hidden shadow-[0_12px_30px_-28px_rgba(6,78,59,0.7)]">
+            <span className={`absolute inset-x-0 top-0 h-0.5 ${item.color}`} />
             <Stat label={item.label} value={item.value} unit={item.unit} />
           </Card>
         ))}
       </div>
 
-      <Card padding="lg" className="mb-6">
-        <h2 className="text-sm font-semibold text-foreground">Environmental risk score</h2>
-        <p className="text-sm text-text-secondary mt-1">Network-wide composite risk assessment</p>
-        <div className="mt-5 flex flex-col gap-6 sm:flex-row sm:items-center">
+      <Card padding="lg" className="mb-6 bg-gradient-to-br from-white to-emerald-50/45 shadow-[0_16px_36px_-32px_rgba(6,78,59,0.65)]">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">Environmental risk score</h2>
+            <p className="mt-1 text-sm text-text-secondary">Network-wide composite risk assessment</p>
+          </div>
+          <span className="rounded-full border border-border bg-white px-2.5 py-1 text-xs font-medium text-text-secondary">Illustrative model</span>
+        </div>
+        <div className="mt-6 flex flex-col gap-7 sm:flex-row sm:items-center">
           <div className="flex items-center gap-4">
             <div
               className="flex h-24 w-24 items-center justify-center rounded-xl"
@@ -65,7 +71,7 @@ export function DashboardView() {
               <p className="text-sm text-text-secondary">Across {cities.length} tracked cities</p>
             </div>
           </div>
-          <div className="flex-1 grid grid-cols-2 gap-3">
+          <div className="grid flex-1 grid-cols-1 gap-x-5 gap-y-4 sm:grid-cols-2">
             {[
               { name: "Emissions intensity", score: 52 },
               { name: "Air quality", score: 48 },
@@ -89,12 +95,12 @@ export function DashboardView() {
         </div>
       </Card>
 
-      <div className="grid gap-5 lg:grid-cols-2 mb-6">
-        <Card padding="lg">
+      <div className="mb-6 grid gap-5 lg:grid-cols-2">
+        <Card padding="lg" className="min-w-0 shadow-[0_16px_36px_-32px_rgba(6,78,59,0.55)]">
           <h2 className="text-sm font-semibold text-foreground">Emissions trends</h2>
           <p className="text-sm text-text-secondary mt-1">Combined output (kt), 2019–2025</p>
-          <div className="mt-4 h-56 min-h-[224px]">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="mt-4 h-56 min-h-[224px] min-w-0">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 500, height: 224 }}>
               <AreaChart data={aggregateEmissionsTrend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                 <XAxis dataKey="year" tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }} />
@@ -106,11 +112,11 @@ export function DashboardView() {
           </div>
         </Card>
 
-        <Card padding="lg">
+        <Card padding="lg" className="min-w-0 shadow-[0_16px_36px_-32px_rgba(6,78,59,0.55)]">
           <h2 className="text-sm font-semibold text-foreground">AQI trends</h2>
           <p className="text-sm text-text-secondary mt-1">Average air quality index, 2019–2025</p>
-          <div className="mt-4 h-56 min-h-[224px]">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="mt-4 h-56 min-h-[224px] min-w-0">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 500, height: 224 }}>
               <BarChart data={aggregateAqiTrend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                 <XAxis dataKey="year" tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }} />
@@ -124,7 +130,7 @@ export function DashboardView() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
-        <Card padding="lg">
+        <Card padding="lg" className="shadow-[0_16px_36px_-32px_rgba(6,78,59,0.55)]">
           <h2 className="text-sm font-semibold text-foreground">Top sustainable cities</h2>
           <ul className="mt-4 space-y-2">
             {topSustainable.map((city, i) => (
@@ -139,7 +145,7 @@ export function DashboardView() {
           </ul>
         </Card>
 
-        <Card padding="lg">
+        <Card padding="lg" className="shadow-[0_16px_36px_-32px_rgba(6,78,59,0.55)]">
           <h2 className="text-sm font-semibold text-foreground">Lowest per-capita emissions</h2>
           <ul className="mt-4 space-y-2">
             {lowestEmissions.map((city, i) => (

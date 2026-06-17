@@ -72,8 +72,8 @@ export function DashboardPreview() {
             +{featuredCity.sustainability.yearlyChange}% YoY
           </p>
         </div>
-        <div className="h-24">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-24 min-w-0">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 440, height: 96 }}>
             <AreaChart data={sparkData}>
               <defs>
                 <linearGradient id="spark" x1="0" y1="0" x2="0" y2="1">

@@ -41,8 +41,8 @@ export function ChartPanels() {
                 Combined CO₂ output (kt) across tracked metros
               </p>
             </div>
-            <div className="h-56 min-h-[224px]">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-56 min-h-[224px] min-w-0">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 520, height: 224 }}>
                 <AreaChart data={aggregateEmissionsTrend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                   <XAxis
@@ -79,8 +79,8 @@ export function ChartPanels() {
                 Mean air quality index across tracked cities
               </p>
             </div>
-            <div className="h-56 min-h-[224px]">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-56 min-h-[224px] min-w-0">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 520, height: 224 }}>
                 <BarChart data={aggregateAqiTrend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                   <XAxis

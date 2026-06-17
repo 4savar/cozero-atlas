@@ -29,7 +29,7 @@ export function Hero() {
               {[
                 { label: "Cities tracked", value: "8" },
                 { label: "Data points", value: "2.4K+" },
-                { label: "Updated", value: "Daily" },
+                { label: "Dataset", value: "Demo" },
               ].map((item) => (
                 <div key={item.label}>
                   <dt className="text-xs font-medium uppercase tracking-wide text-text-secondary">
@@ -41,6 +41,10 @@ export function Hero() {
                 </div>
               ))}
             </dl>
+            <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-text-secondary">
+              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+              Illustrative synthetic data for product evaluation — not live measurements.
+            </p>
           </div>
 
           <div>

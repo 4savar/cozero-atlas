@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import {
   LineChart,
   Line,
@@ -23,7 +23,7 @@ function EmissionsPanel({ city }: { city: City }) {
     <Card padding="lg">
       <h3 className="text-sm font-semibold text-foreground">Emissions</h3>
       <p className="text-sm text-text-secondary mt-1">City-level CO₂ output and sector breakdown</p>
-      <div className="mt-5 grid grid-cols-3 gap-4">
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Stat label="Total" value={city.emissions.totalCo2} unit="Mt" delta={city.emissions.yearlyChange} />
         <Stat label="Per capita" value={city.emissions.perCapita} unit="t" />
         <Stat label="YoY change" value={`${city.emissions.yearlyChange}%`} />
@@ -56,14 +56,14 @@ function AirQualityPanel({ city }: { city: City }) {
         </div>
         <Badge>{city.airQuality.status}</Badge>
       </div>
-      <div className="mt-5 flex items-center gap-6">
+      <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-6">
         <div
           className="flex h-20 w-20 items-center justify-center rounded-xl"
           style={{ backgroundColor: `${color}18` }}
         >
           <span className="text-3xl font-bold" style={{ color }}>{city.airQuality.aqi}</span>
         </div>
-        <dl className="grid grid-cols-3 gap-4 flex-1">
+        <dl className="grid w-full flex-1 grid-cols-3 gap-3 sm:gap-4">
           {[
             { label: "PM2.5", value: `${city.airQuality.pm25} µg/m³` },
             { label: "O₃", value: `${city.airQuality.o3} ppb` },
@@ -121,8 +121,8 @@ function TrendsPanel({ city }: { city: City }) {
     <Card padding="lg">
       <h3 className="text-sm font-semibold text-foreground">Historical trends</h3>
       <p className="text-sm text-text-secondary mt-1">2019–2025 performance for {city.name}</p>
-      <div className="mt-5 h-64 min-h-[256px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="mt-5 h-64 min-h-[256px] min-w-0">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 960, height: 256 }}>
           <LineChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="year" tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }} />
@@ -142,16 +142,17 @@ function TrendsPanel({ city }: { city: City }) {
 function ExplorerContent() {
   const searchParams = useSearchParams();
   const cityParam = searchParams.get("city");
-  const [selected, setSelected] = useState<City>(
-    getCityById(cities, cityParam ?? "") ?? cities[0]
-  );
+  const routeCity = getCityById(cities, cityParam ?? "") ?? cities[0];
+  const [manualSelection, setManualSelection] = useState<{
+    city: City;
+    routeParam: string | null;
+  } | null>(null);
+  const selected =
+    manualSelection?.routeParam === cityParam ? manualSelection.city : routeCity;
 
-  useEffect(() => {
-    if (cityParam) {
-      const city = getCityById(cities, cityParam);
-      if (city) setSelected(city);
-    }
-  }, [cityParam]);
+  function selectCity(city: City) {
+    setManualSelection({ city, routeParam: cityParam });
+  }
 
   const risk = getRiskLevel(selected.riskScore);
 
@@ -169,7 +170,7 @@ function ExplorerContent() {
           </p>
         </div>
         <div className="w-full max-w-xs">
-          <CitySearch onSelect={setSelected} placeholder="Switch city..." />
+          <CitySearch onSelect={selectCity} placeholder="Switch city..." />
         </div>
       </div>
 
@@ -206,7 +207,7 @@ function ExplorerContent() {
             <button
               key={city.id}
               type="button"
-              onClick={() => setSelected(city)}
+              onClick={() => selectCity(city)}
               className={`rounded-lg border p-3 text-left text-sm transition-colors ${
                 selected.id === city.id
                   ? "border-brand bg-accent-light"
