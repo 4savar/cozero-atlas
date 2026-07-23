@@ -13,16 +13,29 @@ import {
   Legend,
 } from "recharts";
 import { cities } from "@/lib/data";
-import { getCityById, formatPopulation, getAqiColor, getRiskLevel } from "@/lib/utils";
+import { getCityById, formatPopulation, getAqiColor, getRiskLevel, searchCities } from "@/lib/utils";
 import { CitySearch } from "@/components/ui/CitySearch";
 import { Card, Badge, Stat } from "@/components/ui/Card";
 import type { City } from "@/lib/types";
 
+function DemoLabel() {
+  return (
+    <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-800">
+      Representative demo
+    </span>
+  );
+}
+
 function EmissionsPanel({ city }: { city: City }) {
   return (
     <Card padding="lg">
-      <h3 className="text-sm font-semibold text-foreground">Emissions</h3>
-      <p className="text-sm text-text-secondary mt-1">City-level CO₂ output and sector breakdown</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Emissions</h3>
+          <p className="mt-1 text-sm text-text-secondary">Representative CO₂ output and sector breakdown</p>
+        </div>
+        <DemoLabel />
+      </div>
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Stat label="Total" value={city.emissions.totalCo2} unit="Mt" delta={city.emissions.yearlyChange} />
         <Stat label="Per capita" value={city.emissions.perCapita} unit="t" />
@@ -54,7 +67,10 @@ function AirQualityPanel({ city }: { city: City }) {
           <h3 className="text-sm font-semibold text-foreground">Air quality</h3>
           <p className="text-sm text-text-secondary mt-1">Current index and pollutant levels</p>
         </div>
-        <Badge>{city.airQuality.status}</Badge>
+        <div className="flex flex-wrap justify-end gap-2">
+          <DemoLabel />
+          <Badge>{city.airQuality.status}</Badge>
+        </div>
       </div>
       <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-6">
         <div
@@ -83,8 +99,13 @@ function AirQualityPanel({ city }: { city: City }) {
 function SustainabilityPanel({ city }: { city: City }) {
   return (
     <Card padding="lg">
-      <h3 className="text-sm font-semibold text-foreground">Sustainability score</h3>
-      <p className="text-sm text-text-secondary mt-1">Composite rating across key categories</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Sustainability score</h3>
+          <p className="mt-1 text-sm text-text-secondary">Representative composite rating across key categories</p>
+        </div>
+        <DemoLabel />
+      </div>
       <div className="mt-5 flex items-center gap-6">
         <p className="text-4xl font-bold text-brand">{city.sustainability.score}</p>
         <div className="text-sm text-text-secondary space-y-1">
@@ -119,8 +140,13 @@ function TrendsPanel({ city }: { city: City }) {
 
   return (
     <Card padding="lg">
-      <h3 className="text-sm font-semibold text-foreground">Historical trends</h3>
-      <p className="text-sm text-text-secondary mt-1">2019–2025 performance for {city.name}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Historical trends</h3>
+          <p className="mt-1 text-sm text-text-secondary">Representative 2019–2025 trend for {city.name}</p>
+        </div>
+        <DemoLabel />
+      </div>
       <div className="mt-5 h-64 min-h-[256px] min-w-0">
         <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 960, height: 256 }}>
           <LineChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -147,6 +173,7 @@ function ExplorerContent() {
     city: City;
     routeParam: string | null;
   } | null>(null);
+  const [directoryQuery, setDirectoryQuery] = useState("");
   const selected =
     manualSelection?.routeParam === cityParam ? manualSelection.city : routeCity;
 
@@ -155,6 +182,7 @@ function ExplorerContent() {
   }
 
   const risk = getRiskLevel(selected.riskScore);
+  const directoryCities = searchCities(cities, directoryQuery).slice(0, 12);
 
   return (
     <>
@@ -168,6 +196,11 @@ function ExplorerContent() {
             {selected.state} · Pop. {formatPopulation(selected.population)} · Risk:{" "}
             <span style={{ color: risk.color }} className="font-medium">{risk.label}</span>
           </p>
+          <p className="mt-2 text-xs text-text-secondary">
+            {selected.populationSource
+              ? `Population: Census Vintage ${selected.populationYear} · Geography: Census 2025 Gazetteer · Verified ${selected.lastVerified}`
+              : "Environmental metrics are representative demo values in this legacy Atlas record."}
+          </p>
         </div>
         <div className="w-full max-w-xs">
           <CitySearch onSelect={selectCity} placeholder="Switch city..." />
@@ -179,7 +212,13 @@ function ExplorerContent() {
         <AirQualityPanel city={selected} />
         <SustainabilityPanel city={selected} />
         <Card padding="lg">
-          <h3 className="text-sm font-semibold text-foreground">Quick metrics</h3>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Quick metrics</h3>
+              <p className="mt-1 text-sm text-text-secondary">Representative city profile</p>
+            </div>
+            <DemoLabel />
+          </div>
           <dl className="mt-5 grid grid-cols-2 gap-4">
             {[
               { label: "Risk score", value: selected.riskScore },
@@ -201,9 +240,23 @@ function ExplorerContent() {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-sm font-semibold text-foreground mb-3">All cities</h2>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {cities.map((city) => (
+        <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">City directory</h2>
+            <p className="mt-1 text-sm text-text-secondary">Search across all {cities.length} tracked places; showing up to 12 matches.</p>
+          </div>
+          <label className="w-full sm:w-64">
+            <span className="sr-only">Filter city directory</span>
+            <input
+              value={directoryQuery}
+              onChange={(event) => setDirectoryQuery(event.target.value)}
+              placeholder="Filter city directory…"
+              className="h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+            />
+          </label>
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {directoryCities.map((city) => (
             <button
               key={city.id}
               type="button"
@@ -216,11 +269,16 @@ function ExplorerContent() {
             >
               <p className="font-medium text-foreground">{city.name}, {city.stateCode}</p>
               <p className="text-xs text-text-secondary mt-0.5">
-                AQI {city.airQuality.aqi} · Score {city.sustainability.score}
+                Pop. {formatPopulation(city.population)} · <span className="text-amber-700">Demo environment</span>
               </p>
             </button>
           ))}
         </div>
+        {!directoryCities.length && (
+          <div className="mt-4 rounded-xl border border-dashed border-border bg-surface px-4 py-8 text-center text-sm text-text-secondary">
+            No cities match “{directoryQuery}”. Try a city, state, or postal abbreviation.
+          </div>
+        )}
       </div>
     </>
   );

@@ -24,7 +24,9 @@ export function CitySearch({
   const [highlighted, setHighlighted] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const results = searchCities(cities, query).slice(0, 6);
+  // Keep the default menu compact, while broadening state-level searches enough
+  // to surface lower-population places such as Fremont.
+  const results = searchCities(cities, query).slice(0, query.trim() ? 50 : 8);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -75,20 +77,28 @@ export function CitySearch({
             } else if (e.key === "Enter" && results[highlighted]) {
               e.preventDefault();
               selectCity(results[highlighted]);
+            } else if (e.key === "Escape") {
+              setOpen(false);
             }
           }}
           placeholder={placeholder}
+          role="combobox"
+          aria-expanded={open && results.length > 0}
+          aria-controls="city-search-results"
+          aria-autocomplete="list"
           className="w-full h-10 rounded-lg border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-text-secondary outline-none focus:border-brand focus:ring-2 focus:ring-brand/10"
         />
       </div>
       {open && results.length > 0 && (
-        <ul className="absolute z-50 mt-1 w-full overflow-hidden rounded-lg border border-border bg-white shadow-md">
+        <ul id="city-search-results" role="listbox" className="absolute z-50 mt-1 w-full overflow-hidden rounded-lg border border-border bg-white shadow-md">
           {results.map((city, i) => (
             <li key={city.id}>
               <button
                 type="button"
                 onClick={() => selectCity(city)}
                 onMouseEnter={() => setHighlighted(i)}
+                role="option"
+                aria-selected={i === highlighted}
                 className={`flex w-full items-center justify-between px-3 py-2.5 text-sm ${
                   i === highlighted ? "bg-accent-light" : "hover:bg-surface"
                 }`}
@@ -97,7 +107,7 @@ export function CitySearch({
                   <span className="font-medium text-foreground">{city.name}</span>
                   <span className="text-text-secondary">, {city.stateCode}</span>
                 </span>
-                <span className="text-xs text-text-secondary">AQI {city.airQuality.aqi}</span>
+                <span className="text-xs text-amber-700">Demo environment</span>
               </button>
             </li>
           ))}

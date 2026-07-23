@@ -23,13 +23,13 @@ export function DashboardPreview() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-text-secondary">
-              Live city snapshot
+              City snapshot
             </p>
             <p className="mt-0.5 text-base font-semibold text-foreground">
               {featuredCity.name}, {featuredCity.stateCode}
             </p>
           </div>
-          <Badge>{featuredCity.airQuality.status} air</Badge>
+          <Badge>Representative data</Badge>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export function DashboardPreview() {
       <div className="border-t border-border px-5 py-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm font-medium text-foreground">
-            Sustainability trend
+            Representative sustainability trend
           </p>
           <p className="text-sm font-medium text-accent">
             +{featuredCity.sustainability.yearlyChange}% YoY
@@ -95,7 +95,7 @@ export function DashboardPreview() {
         <div className="mt-3 flex items-center gap-4 text-xs text-text-secondary">
           <span>PM2.5: {featuredCity.airQuality.pm25} µg/m³</span>
           <span>O₃: {featuredCity.airQuality.o3} ppb</span>
-          <span>Rank #{featuredCity.sustainability.nationalRank}</span>
+          <span>Demo rank #{featuredCity.sustainability.nationalRank}</span>
         </div>
       </div>
     </Card>

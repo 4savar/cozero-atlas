@@ -40,6 +40,13 @@ export interface City {
   sustainability: SustainabilityData;
   history: HistoricalPoint[];
   riskScore: number;
+  /** Environmental fields are representative product-demo values, not live observations. */
+  dataStatus: "demo";
+  /** Available for Census-backed expanded coverage. */
+  populationSource?: string;
+  populationYear?: number;
+  geographySource?: string;
+  lastVerified?: string;
 }
 
 export interface GlobalStats {

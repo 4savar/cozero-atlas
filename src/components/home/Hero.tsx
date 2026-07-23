@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Card";
 import { DashboardPreview } from "@/components/home/DashboardPreview";
+import { globalStats } from "@/lib/data";
 
 export function Hero() {
   return (
@@ -27,9 +28,9 @@ export function Hero() {
             </div>
             <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-border pt-8">
               {[
-                { label: "Cities tracked", value: "8" },
-                { label: "Data points", value: "2.4K+" },
-                { label: "Dataset", value: "Demo" },
+                { label: "Cities tracked", value: globalStats.citiesTracked },
+                { label: "Coverage", value: "U.S. West+" },
+                { label: "Data status", value: "Demo" },
               ].map((item) => (
                 <div key={item.label}>
                   <dt className="text-xs font-medium uppercase tracking-wide text-text-secondary">
@@ -43,7 +44,7 @@ export function Hero() {
             </dl>
             <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-text-secondary">
               <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-              Illustrative synthetic data for product evaluation — not live measurements.
+              Population and geography use public Census datasets where identified; environmental metrics are representative demo values, not live measurements.
             </p>
           </div>
 

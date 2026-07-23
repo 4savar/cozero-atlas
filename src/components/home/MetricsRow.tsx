@@ -31,6 +31,9 @@ export function MetricsRow() {
             </Card>
           ))}
         </div>
+        <p className="mt-4 text-xs text-text-secondary">
+          Environmental summary metrics are representative demo values. Expanded population and geographic records are verified against U.S. Census Vintage 2025 and 2025 Gazetteer data.
+        </p>
       </div>
     </Section>
   );

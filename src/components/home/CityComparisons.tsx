@@ -62,13 +62,13 @@ export function CityComparisons() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <SectionHeader
           title="City comparisons"
-          description="Benchmark sustainability performance and per-capita emissions across tracked metros."
+          description="Compare representative sustainability and emissions demo metrics across tracked places."
         />
 
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-4">
-              Top sustainability scores
+              Top representative sustainability scores
             </h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {topBySustainability.map((city, i) => (
@@ -85,7 +85,7 @@ export function CityComparisons() {
 
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-4">
-              Lowest per-capita emissions
+              Lowest representative per-capita emissions
             </h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {lowestEmissions.map((city, i) => (

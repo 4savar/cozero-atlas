@@ -28,7 +28,7 @@ export function ChartPanels() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <SectionHeader
           title="Network-wide trends"
-          description="Aggregate emissions and air quality trajectories across all tracked cities, 2019–2025."
+          description="Representative aggregate trajectories across all tracked cities, 2019–2025."
         />
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -38,7 +38,7 @@ export function ChartPanels() {
                 Total emissions
               </h3>
               <p className="text-sm text-text-secondary mt-1">
-                Combined CO₂ output (kt) across tracked metros
+                Representative combined CO₂ output (Mt) across tracked places
               </p>
             </div>
             <div className="h-56 min-h-[224px] min-w-0">
@@ -60,7 +60,7 @@ export function ChartPanels() {
                   <Area
                     type="monotone"
                     dataKey="emissions"
-                    name="Emissions (kt)"
+                    name="Representative emissions (Mt)"
                     stroke="#064e3b"
                     strokeWidth={2}
                     fill="#dcfce7"
@@ -76,7 +76,7 @@ export function ChartPanels() {
                 Average AQI
               </h3>
               <p className="text-sm text-text-secondary mt-1">
-                Mean air quality index across tracked cities
+                Representative mean air quality index across tracked places
               </p>
             </div>
             <div className="h-56 min-h-[224px] min-w-0">

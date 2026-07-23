@@ -18,7 +18,7 @@ export default function ExplorerPage() {
         </div>
         <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950">
           <span className="font-semibold">Illustrative data:</span>{" "}
-          Metrics are synthetic values for product evaluation and do not represent live environmental measurements.
+          Environmental metrics are synthetic values for product evaluation and do not represent live measurements. Population and geographic data for expanded coverage use U.S. Census Vintage 2025 and 2025 Gazetteer datasets (verified July 23, 2026).
         </div>
         <ExplorerClient />
       </div>

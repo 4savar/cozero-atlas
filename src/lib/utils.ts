@@ -41,13 +41,18 @@ export function searchCities<T extends { name: string; state: string; stateCode:
   cities: T[],
   query: string
 ): T[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return cities;
+  const terms = query
+    .trim()
+    .toLowerCase()
+    .replace(/[,]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!terms.length) return cities;
   return cities.filter(
-    (city) =>
-      city.name.toLowerCase().includes(q) ||
-      city.state.toLowerCase().includes(q) ||
-      city.stateCode.toLowerCase().includes(q)
+    (city) => {
+      const searchable = `${city.name} ${city.state} ${city.stateCode}`.toLowerCase();
+      return terms.every((term) => searchable.includes(term));
+    }
   );
 }
 
