@@ -86,11 +86,11 @@ export function CitySearch({
           aria-expanded={open && results.length > 0}
           aria-controls="city-search-results"
           aria-autocomplete="list"
-          className="w-full h-10 rounded-lg border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-text-secondary outline-none focus:border-brand focus:ring-2 focus:ring-brand/10"
+          className="w-full h-10 rounded-md border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-text-secondary outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
         />
       </div>
       {open && results.length > 0 && (
-        <ul id="city-search-results" role="listbox" className="absolute z-50 mt-1 w-full overflow-hidden rounded-lg border border-border bg-white shadow-md">
+        <ul id="city-search-results" role="listbox" className="absolute z-50 mt-1 max-h-80 w-full overflow-y-auto rounded-md border border-border bg-[#111a14] shadow-2xl shadow-black/50">
           {results.map((city, i) => (
             <li key={city.id}>
               <button
@@ -107,7 +107,7 @@ export function CitySearch({
                   <span className="font-medium text-foreground">{city.name}</span>
                   <span className="text-text-secondary">, {city.stateCode}</span>
                 </span>
-                <span className="text-xs text-amber-700">Demo environment</span>
+                <span className="text-xs text-text-secondary">Pop. {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(city.population)}</span>
               </button>
             </li>
           ))}

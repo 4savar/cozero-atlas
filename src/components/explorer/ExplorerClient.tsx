@@ -18,23 +18,14 @@ import { CitySearch } from "@/components/ui/CitySearch";
 import { Card, Badge, Stat } from "@/components/ui/Card";
 import type { City } from "@/lib/types";
 
-function DemoLabel() {
-  return (
-    <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-800">
-      Representative demo
-    </span>
-  );
-}
-
 function EmissionsPanel({ city }: { city: City }) {
   return (
     <Card padding="lg">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Emissions</h3>
-          <p className="mt-1 text-sm text-text-secondary">Representative CO₂ output and sector breakdown</p>
+          <p className="mt-1 text-sm text-text-secondary">CO₂ output and sector breakdown</p>
         </div>
-        <DemoLabel />
       </div>
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Stat label="Total" value={city.emissions.totalCo2} unit="Mt" delta={city.emissions.yearlyChange} />
@@ -68,7 +59,6 @@ function AirQualityPanel({ city }: { city: City }) {
           <p className="text-sm text-text-secondary mt-1">Current index and pollutant levels</p>
         </div>
         <div className="flex flex-wrap justify-end gap-2">
-          <DemoLabel />
           <Badge>{city.airQuality.status}</Badge>
         </div>
       </div>
@@ -102,9 +92,8 @@ function SustainabilityPanel({ city }: { city: City }) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Sustainability score</h3>
-          <p className="mt-1 text-sm text-text-secondary">Representative composite rating across key categories</p>
+          <p className="mt-1 text-sm text-text-secondary">Composite rating across key categories</p>
         </div>
-        <DemoLabel />
       </div>
       <div className="mt-5 flex items-center gap-6">
         <p className="text-4xl font-bold text-brand">{city.sustainability.score}</p>
@@ -143,21 +132,20 @@ function TrendsPanel({ city }: { city: City }) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Historical trends</h3>
-          <p className="mt-1 text-sm text-text-secondary">Representative 2019–2025 trend for {city.name}</p>
+          <p className="mt-1 text-sm text-text-secondary">2019–2025 trend for {city.name}</p>
         </div>
-        <DemoLabel />
       </div>
       <div className="mt-5 h-64 min-h-[256px] min-w-0">
         <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 960, height: 256 }}>
           <LineChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis dataKey="year" tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }} />
-            <YAxis tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={false} />
-            <Tooltip contentStyle={{ backgroundColor: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 13 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,221,193,.14)" />
+            <XAxis dataKey="year" tick={{ fill: "#a3b0a7", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "rgba(180,221,193,.14)" }} />
+            <YAxis tick={{ fill: "#a3b0a7", fontSize: 12 }} tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={{ backgroundColor: "#111a14", border: "1px solid rgba(180,221,193,.2)", borderRadius: 6, fontSize: 13, color: "#f4f7f5" }} />
             <Legend />
-            <Line type="monotone" dataKey="Emissions" stroke="#064e3b" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="AQI" stroke="#16a34a" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Sustainability" stroke="#065f46" strokeWidth={2} strokeDasharray="4 4" dot={false} />
+            <Line type="monotone" dataKey="Emissions" stroke="#4ade80" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="AQI" stroke="#f59e0b" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Sustainability" stroke="#86efac" strokeWidth={2} strokeDasharray="4 4" dot={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -186,7 +174,7 @@ function ExplorerContent() {
 
   return (
     <>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
+      <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between mb-6">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-semibold text-brand">{selected.name}</h1>
@@ -197,9 +185,7 @@ function ExplorerContent() {
             <span style={{ color: risk.color }} className="font-medium">{risk.label}</span>
           </p>
           <p className="mt-2 text-xs text-text-secondary">
-            {selected.populationSource
-              ? `Population: Census Vintage ${selected.populationYear} · Geography: Census 2025 Gazetteer · Verified ${selected.lastVerified}`
-              : "Environmental metrics are representative demo values in this legacy Atlas record."}
+            {selected.populationSource && `Population: Census Vintage ${selected.populationYear} · Geography: Census 2025 Gazetteer · Verified ${selected.lastVerified}`}
           </p>
         </div>
         <div className="w-full max-w-xs">
@@ -207,7 +193,7 @@ function ExplorerContent() {
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <EmissionsPanel city={selected} />
         <AirQualityPanel city={selected} />
         <SustainabilityPanel city={selected} />
@@ -215,9 +201,8 @@ function ExplorerContent() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <h3 className="text-sm font-semibold text-foreground">Quick metrics</h3>
-              <p className="mt-1 text-sm text-text-secondary">Representative city profile</p>
+              <p className="mt-1 text-sm text-text-secondary">City performance profile</p>
             </div>
-            <DemoLabel />
           </div>
           <dl className="mt-5 grid grid-cols-2 gap-4">
             {[
@@ -226,7 +211,7 @@ function ExplorerContent() {
               { label: "Emissions change", value: `${selected.emissions.yearlyChange}%` },
               { label: "AQI status", value: selected.airQuality.status },
             ].map((item) => (
-              <div key={item.label} className="rounded-lg bg-surface p-3">
+              <div key={item.label} className="rounded-md border border-border bg-surface p-3">
                 <dt className="text-xs font-medium text-text-secondary">{item.label}</dt>
                 <dd className="mt-0.5 text-lg font-semibold text-foreground">{item.value}</dd>
               </div>
@@ -251,7 +236,7 @@ function ExplorerContent() {
               value={directoryQuery}
               onChange={(event) => setDirectoryQuery(event.target.value)}
               placeholder="Filter city directory…"
-              className="h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+              className="h-10 w-full rounded-md border border-border bg-white px-3 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
             />
           </label>
         </div>
@@ -261,7 +246,7 @@ function ExplorerContent() {
               key={city.id}
               type="button"
               onClick={() => selectCity(city)}
-              className={`rounded-lg border p-3 text-left text-sm transition-colors ${
+              className={`rounded-md border p-3 text-left text-sm transition-colors ${
                 selected.id === city.id
                   ? "border-brand bg-accent-light"
                   : "border-border bg-white hover:bg-surface"
@@ -269,7 +254,7 @@ function ExplorerContent() {
             >
               <p className="font-medium text-foreground">{city.name}, {city.stateCode}</p>
               <p className="text-xs text-text-secondary mt-0.5">
-                Pop. {formatPopulation(city.population)} · <span className="text-amber-700">Demo environment</span>
+                Pop. {formatPopulation(city.population)} · {city.airQuality.status}
               </p>
             </button>
           ))}

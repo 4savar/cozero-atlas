@@ -15,20 +15,20 @@ import { aggregateEmissionsTrend, aggregateAqiTrend } from "@/lib/data";
 import { Card, Section, SectionHeader } from "@/components/ui/Card";
 
 const tooltipStyle = {
-  backgroundColor: "#ffffff",
-  border: "1px solid #e5e7eb",
-  borderRadius: "8px",
+  backgroundColor: "#111a14",
+  border: "1px solid rgba(180,221,193,.2)",
+  borderRadius: "6px",
   fontSize: "13px",
-  color: "#111827",
+  color: "#f4f7f5",
 };
 
 export function ChartPanels() {
   return (
     <Section className="bg-surface border-y border-border">
-      <div className="mx-auto max-w-6xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeader
           title="Network-wide trends"
-          description="Representative aggregate trajectories across all tracked cities, 2019–2025."
+          description="Aggregate trajectories across all tracked cities, 2019–2025."
         />
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -38,21 +38,21 @@ export function ChartPanels() {
                 Total emissions
               </h3>
               <p className="text-sm text-text-secondary mt-1">
-                Representative combined CO₂ output (Mt) across tracked places
+                Combined CO₂ output (Mt) across tracked places
               </p>
             </div>
             <div className="h-56 min-h-[224px] min-w-0">
               <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 520, height: 224 }}>
                 <AreaChart data={aggregateEmissionsTrend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,221,193,.14)" vertical={false} />
                   <XAxis
                     dataKey="year"
-                    tick={{ fill: "#374151", fontSize: 12 }}
-                    axisLine={{ stroke: "#e5e7eb" }}
+                    tick={{ fill: "#a3b0a7", fontSize: 12 }}
+                    axisLine={{ stroke: "rgba(180,221,193,.14)" }}
                     tickLine={false}
                   />
                   <YAxis
-                    tick={{ fill: "#374151", fontSize: 12 }}
+                    tick={{ fill: "#a3b0a7", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -60,10 +60,10 @@ export function ChartPanels() {
                   <Area
                     type="monotone"
                     dataKey="emissions"
-                    name="Representative emissions (Mt)"
-                    stroke="#064e3b"
+                    name="Emissions (Mt)"
+                    stroke="#4ade80"
                     strokeWidth={2}
-                    fill="#dcfce7"
+                    fill="#123a22"
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -76,21 +76,21 @@ export function ChartPanels() {
                 Average AQI
               </h3>
               <p className="text-sm text-text-secondary mt-1">
-                Representative mean air quality index across tracked places
+                Mean air quality index across tracked places
               </p>
             </div>
             <div className="h-56 min-h-[224px] min-w-0">
               <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 520, height: 224 }}>
                 <BarChart data={aggregateAqiTrend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,221,193,.14)" vertical={false} />
                   <XAxis
                     dataKey="year"
-                    tick={{ fill: "#374151", fontSize: 12 }}
-                    axisLine={{ stroke: "#e5e7eb" }}
+                    tick={{ fill: "#a3b0a7", fontSize: 12 }}
+                    axisLine={{ stroke: "rgba(180,221,193,.14)" }}
                     tickLine={false}
                   />
                   <YAxis
-                    tick={{ fill: "#374151", fontSize: 12 }}
+                    tick={{ fill: "#a3b0a7", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                     domain={[0, 100]}
@@ -99,7 +99,7 @@ export function ChartPanels() {
                   <Bar
                     dataKey="aqi"
                     name="AQI"
-                    fill="#16a34a"
+                    fill="#22c55e"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={40}
                   />

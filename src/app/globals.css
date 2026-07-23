@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
-  --text-secondary: #374151;
-  --brand: #064e3b;
-  --brand-hover: #065f46;
-  --accent: #16a34a;
-  --accent-light: #dcfce7;
-  --border: #e5e7eb;
-  --surface: #f9fafb;
+  --background: #050806;
+  --foreground: #f4f7f5;
+  --text-secondary: #a3b0a7;
+  --brand: #22c55e;
+  --brand-hover: #4ade80;
+  --accent: #4ade80;
+  --accent-light: #123a22;
+  --border: rgba(180, 221, 193, 0.14);
+  --surface: #0d1410;
+  --panel: #111a14;
 }
 
 @theme inline {
@@ -26,14 +27,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--background); }
 body {
   background: var(--background);
   color: var(--foreground);
@@ -42,7 +37,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-::selection {
-  background: var(--accent-light);
-  color: var(--brand);
+::selection { background: #1b6034; color: #fff; }
+
+/* Intentional terminal surfaces for legacy utility usage. */
+.bg-white { background-color: var(--panel) !important; }
+.bg-white\/95 { background-color: rgba(5, 8, 6, 0.94) !important; }
+.bg-\[\#f4f8f5\] { background-color: #07110b !important; }
+
+.atlas-grid {
+  background-image: linear-gradient(rgba(134, 239, 172, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(134, 239, 172, .055) 1px, transparent 1px);
+  background-size: 34px 34px;
 }
+
+:focus-visible { outline: 2px solid #4ade80; outline-offset: 2px; }

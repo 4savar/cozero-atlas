@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/Button";
 
 export function CTABand() {
   return (
-    <section className="border-t border-border bg-white py-14">
-      <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-xl border border-border bg-surface p-8 sm:flex-row sm:items-center lg:p-10">
+    <section className="border-t border-border bg-background py-12">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-lg border border-brand/20 bg-[#0b2115] p-7 sm:flex-row sm:items-center lg:p-9">
           <div>
-            <h2 className="text-xl font-semibold text-brand">
+            <h2 className="text-xl font-semibold text-foreground">
               Start exploring environmental data
             </h2>
             <p className="mt-2 text-sm text-text-secondary max-w-md">
