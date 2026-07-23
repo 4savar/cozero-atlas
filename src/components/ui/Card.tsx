@@ -21,7 +21,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-white",
+        "rounded-lg border border-border bg-white shadow-[0_14px_34px_-28px_rgba(0,0,0,0.9)]",
         paddings[padding],
         className
       )}
@@ -41,7 +41,7 @@ export function Section({
   id?: string;
 }) {
   return (
-    <section id={id} className={cn("py-16 lg:py-20", className)}>
+    <section id={id} className={cn("py-14 lg:py-18", className)}>
       {children}
     </section>
   );
@@ -80,7 +80,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md bg-accent-light px-2.5 py-1 text-xs font-medium text-brand",
+        "inline-flex items-center rounded-md border border-brand/20 bg-accent-light px-2.5 py-1 text-xs font-medium text-brand",
         className
       )}
     >

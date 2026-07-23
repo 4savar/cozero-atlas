@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-white">
-      <div className="mx-auto max-w-6xl px-6 py-12 lg:px-8">
+    <footer className="border-t border-border bg-[#070a08]">
+      <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-xs">
-            <p className="text-sm font-semibold text-brand">COzero Atlas</p>
+            <p className="text-sm font-semibold tracking-tight text-foreground">COzero <span className="font-normal text-text-secondary">/ Atlas</span></p>
             <p className="mt-2 text-sm leading-relaxed text-text-secondary">
               Environmental intelligence for cities. Emissions, air quality, and
               sustainability data in one platform.

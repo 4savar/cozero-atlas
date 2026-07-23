@@ -33,10 +33,10 @@ const features = [
 export default function AboutPage() {
   return (
     <>
-      <section className="border-b border-border py-14 lg:py-16">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+      <section className="atlas-grid border-b border-border py-14 lg:py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Badge className="mb-4">About COzero Atlas</Badge>
-          <h1 className="text-3xl font-semibold tracking-tight text-brand lg:text-4xl max-w-2xl">
+          <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground lg:text-4xl">
             Environmental intelligence built for climate action
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-secondary">
@@ -50,7 +50,7 @@ export default function AboutPage() {
       </section>
 
       <Section>
-        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-2">
             <div>
               <h2 className="text-xl font-semibold text-brand">The COzero mission</h2>
@@ -74,7 +74,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <Card padding="lg" className="bg-accent-light/40">
+            <Card padding="lg" className="border-brand/20 bg-[#0b2115]">
               <h2 className="text-xl font-semibold text-brand">The Atlas platform</h2>
               <div className="mt-4 space-y-4 text-sm leading-relaxed text-text-secondary">
                 <p>
@@ -93,7 +93,7 @@ export default function AboutPage() {
       </Section>
 
       <Section className="bg-surface border-y border-border py-14">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <h2 className="text-xl font-semibold text-brand mb-6">What Atlas delivers</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {features.map((f) => (
@@ -107,13 +107,22 @@ export default function AboutPage() {
       </Section>
 
       <section className="py-14">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 text-center">
           <h2 className="text-xl font-semibold text-brand">Ready to explore?</h2>
           <p className="mt-2 text-sm text-text-secondary">Start with any city in the Atlas network.</p>
           <div className="mt-6 flex justify-center gap-3">
             <Button href="/explorer" variant="primary">Open Explorer</Button>
             <Button href="/dashboard" variant="outline">View Dashboard</Button>
           </div>
+        </div>
+      </section>
+      <section className="border-t border-border bg-[#070a08] py-8">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-text-secondary">Data sources</p>
+          <p className="mt-2 max-w-3xl text-xs leading-relaxed text-text-secondary">
+            Environmental metrics currently include modeled estimates while verified city-level integrations are being expanded.
+          </p>
+          <p className="mt-1 text-xs text-text-secondary">Population and geographic records use publicly available U.S. Census and geographic datasets where identified.</p>
         </div>
       </section>
     </>

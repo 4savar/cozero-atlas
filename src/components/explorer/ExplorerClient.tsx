@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import {
   LineChart,
   Line,
@@ -13,7 +13,7 @@ import {
   Legend,
 } from "recharts";
 import { cities } from "@/lib/data";
-import { getCityById, formatPopulation, getAqiColor, getRiskLevel } from "@/lib/utils";
+import { getCityById, formatPopulation, getAqiColor, getRiskLevel, searchCities } from "@/lib/utils";
 import { CitySearch } from "@/components/ui/CitySearch";
 import { Card, Badge, Stat } from "@/components/ui/Card";
 import type { City } from "@/lib/types";
@@ -21,9 +21,13 @@ import type { City } from "@/lib/types";
 function EmissionsPanel({ city }: { city: City }) {
   return (
     <Card padding="lg">
-      <h3 className="text-sm font-semibold text-foreground">Emissions</h3>
-      <p className="text-sm text-text-secondary mt-1">City-level CO₂ output and sector breakdown</p>
-      <div className="mt-5 grid grid-cols-3 gap-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Emissions</h3>
+          <p className="mt-1 text-sm text-text-secondary">CO₂ output and sector breakdown</p>
+        </div>
+      </div>
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Stat label="Total" value={city.emissions.totalCo2} unit="Mt" delta={city.emissions.yearlyChange} />
         <Stat label="Per capita" value={city.emissions.perCapita} unit="t" />
         <Stat label="YoY change" value={`${city.emissions.yearlyChange}%`} />
@@ -54,16 +58,18 @@ function AirQualityPanel({ city }: { city: City }) {
           <h3 className="text-sm font-semibold text-foreground">Air quality</h3>
           <p className="text-sm text-text-secondary mt-1">Current index and pollutant levels</p>
         </div>
-        <Badge>{city.airQuality.status}</Badge>
+        <div className="flex flex-wrap justify-end gap-2">
+          <Badge>{city.airQuality.status}</Badge>
+        </div>
       </div>
-      <div className="mt-5 flex items-center gap-6">
+      <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-6">
         <div
           className="flex h-20 w-20 items-center justify-center rounded-xl"
           style={{ backgroundColor: `${color}18` }}
         >
           <span className="text-3xl font-bold" style={{ color }}>{city.airQuality.aqi}</span>
         </div>
-        <dl className="grid grid-cols-3 gap-4 flex-1">
+        <dl className="grid w-full flex-1 grid-cols-3 gap-3 sm:gap-4">
           {[
             { label: "PM2.5", value: `${city.airQuality.pm25} µg/m³` },
             { label: "O₃", value: `${city.airQuality.o3} ppb` },
@@ -83,8 +89,12 @@ function AirQualityPanel({ city }: { city: City }) {
 function SustainabilityPanel({ city }: { city: City }) {
   return (
     <Card padding="lg">
-      <h3 className="text-sm font-semibold text-foreground">Sustainability score</h3>
-      <p className="text-sm text-text-secondary mt-1">Composite rating across key categories</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Sustainability score</h3>
+          <p className="mt-1 text-sm text-text-secondary">Composite rating across key categories</p>
+        </div>
+      </div>
       <div className="mt-5 flex items-center gap-6">
         <p className="text-4xl font-bold text-brand">{city.sustainability.score}</p>
         <div className="text-sm text-text-secondary space-y-1">
@@ -119,19 +129,23 @@ function TrendsPanel({ city }: { city: City }) {
 
   return (
     <Card padding="lg">
-      <h3 className="text-sm font-semibold text-foreground">Historical trends</h3>
-      <p className="text-sm text-text-secondary mt-1">2019–2025 performance for {city.name}</p>
-      <div className="mt-5 h-64 min-h-[256px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Historical trends</h3>
+          <p className="mt-1 text-sm text-text-secondary">2019–2025 trend for {city.name}</p>
+        </div>
+      </div>
+      <div className="mt-5 h-64 min-h-[256px] min-w-0">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 960, height: 256 }}>
           <LineChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis dataKey="year" tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }} />
-            <YAxis tick={{ fill: "#374151", fontSize: 12 }} tickLine={false} axisLine={false} />
-            <Tooltip contentStyle={{ backgroundColor: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 13 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,221,193,.14)" />
+            <XAxis dataKey="year" tick={{ fill: "#a3b0a7", fontSize: 12 }} tickLine={false} axisLine={{ stroke: "rgba(180,221,193,.14)" }} />
+            <YAxis tick={{ fill: "#a3b0a7", fontSize: 12 }} tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={{ backgroundColor: "#111a14", border: "1px solid rgba(180,221,193,.2)", borderRadius: 6, fontSize: 13, color: "#f4f7f5" }} />
             <Legend />
-            <Line type="monotone" dataKey="Emissions" stroke="#064e3b" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="AQI" stroke="#16a34a" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Sustainability" stroke="#065f46" strokeWidth={2} strokeDasharray="4 4" dot={false} />
+            <Line type="monotone" dataKey="Emissions" stroke="#4ade80" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="AQI" stroke="#f59e0b" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Sustainability" stroke="#86efac" strokeWidth={2} strokeDasharray="4 4" dot={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -142,22 +156,25 @@ function TrendsPanel({ city }: { city: City }) {
 function ExplorerContent() {
   const searchParams = useSearchParams();
   const cityParam = searchParams.get("city");
-  const [selected, setSelected] = useState<City>(
-    getCityById(cities, cityParam ?? "") ?? cities[0]
-  );
+  const routeCity = getCityById(cities, cityParam ?? "") ?? cities[0];
+  const [manualSelection, setManualSelection] = useState<{
+    city: City;
+    routeParam: string | null;
+  } | null>(null);
+  const [directoryQuery, setDirectoryQuery] = useState("");
+  const selected =
+    manualSelection?.routeParam === cityParam ? manualSelection.city : routeCity;
 
-  useEffect(() => {
-    if (cityParam) {
-      const city = getCityById(cities, cityParam);
-      if (city) setSelected(city);
-    }
-  }, [cityParam]);
+  function selectCity(city: City) {
+    setManualSelection({ city, routeParam: cityParam });
+  }
 
   const risk = getRiskLevel(selected.riskScore);
+  const directoryCities = searchCities(cities, directoryQuery).slice(0, 12);
 
   return (
     <>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
+      <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between mb-6">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-semibold text-brand">{selected.name}</h1>
@@ -167,18 +184,26 @@ function ExplorerContent() {
             {selected.state} · Pop. {formatPopulation(selected.population)} · Risk:{" "}
             <span style={{ color: risk.color }} className="font-medium">{risk.label}</span>
           </p>
+          <p className="mt-2 text-xs text-text-secondary">
+            {selected.populationSource && `Population: Census Vintage ${selected.populationYear} · Geography: Census 2025 Gazetteer · Verified ${selected.lastVerified}`}
+          </p>
         </div>
         <div className="w-full max-w-xs">
-          <CitySearch onSelect={setSelected} placeholder="Switch city..." />
+          <CitySearch onSelect={selectCity} placeholder="Switch city..." />
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <EmissionsPanel city={selected} />
         <AirQualityPanel city={selected} />
         <SustainabilityPanel city={selected} />
         <Card padding="lg">
-          <h3 className="text-sm font-semibold text-foreground">Quick metrics</h3>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Quick metrics</h3>
+              <p className="mt-1 text-sm text-text-secondary">City performance profile</p>
+            </div>
+          </div>
           <dl className="mt-5 grid grid-cols-2 gap-4">
             {[
               { label: "Risk score", value: selected.riskScore },
@@ -186,7 +211,7 @@ function ExplorerContent() {
               { label: "Emissions change", value: `${selected.emissions.yearlyChange}%` },
               { label: "AQI status", value: selected.airQuality.status },
             ].map((item) => (
-              <div key={item.label} className="rounded-lg bg-surface p-3">
+              <div key={item.label} className="rounded-md border border-border bg-surface p-3">
                 <dt className="text-xs font-medium text-text-secondary">{item.label}</dt>
                 <dd className="mt-0.5 text-lg font-semibold text-foreground">{item.value}</dd>
               </div>
@@ -200,14 +225,28 @@ function ExplorerContent() {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-sm font-semibold text-foreground mb-3">All cities</h2>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {cities.map((city) => (
+        <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">City directory</h2>
+            <p className="mt-1 text-sm text-text-secondary">Search across all {cities.length} tracked places; showing up to 12 matches.</p>
+          </div>
+          <label className="w-full sm:w-64">
+            <span className="sr-only">Filter city directory</span>
+            <input
+              value={directoryQuery}
+              onChange={(event) => setDirectoryQuery(event.target.value)}
+              placeholder="Filter city directory…"
+              className="h-10 w-full rounded-md border border-border bg-white px-3 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/10"
+            />
+          </label>
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {directoryCities.map((city) => (
             <button
               key={city.id}
               type="button"
-              onClick={() => setSelected(city)}
-              className={`rounded-lg border p-3 text-left text-sm transition-colors ${
+              onClick={() => selectCity(city)}
+              className={`rounded-md border p-3 text-left text-sm transition-colors ${
                 selected.id === city.id
                   ? "border-brand bg-accent-light"
                   : "border-border bg-white hover:bg-surface"
@@ -215,11 +254,16 @@ function ExplorerContent() {
             >
               <p className="font-medium text-foreground">{city.name}, {city.stateCode}</p>
               <p className="text-xs text-text-secondary mt-0.5">
-                AQI {city.airQuality.aqi} · Score {city.sustainability.score}
+                Pop. {formatPopulation(city.population)} · {city.airQuality.status}
               </p>
             </button>
           ))}
         </div>
+        {!directoryCities.length && (
+          <div className="mt-4 rounded-xl border border-dashed border-border bg-surface px-4 py-8 text-center text-sm text-text-secondary">
+            No cities match “{directoryQuery}”. Try a city, state, or postal abbreviation.
+          </div>
+        )}
       </div>
     </>
   );
